@@ -7,6 +7,7 @@ const USER_KEY = 'hm-toutiao-mobile-user'
 
 export default new Vuex.Store({
   state: {
+    // 读取用户信息  用户信息不一定获得到
     // 通过 || 设定，如果localStorage没有数据，就返回{}空对象
     user: JSON.parse(localStorage.getItem(USER_KEY) || '{}')
   },
