@@ -10,7 +10,8 @@ import Vant from 'vant'
 import 'vant/lib/index.css'
 // res基准值
 import 'amfe-flexible/index.min.js'
-
+// 导入全局样式控制文件
+import '@/assets/css/global.less'
 // 全局注册
 Vue.use(Vant)
 
