@@ -1,0 +1,77 @@
+[33mcommit bc446b6ec96b0e43f4f3d06544125e6573d1c2c1[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 22:05:47 2020 +0800
+
+    文章上拉效果--文章组件独立
+
+[33mcommit 87a6206bc44765134f6ebd53e4ed9c84a91d486a[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 21:50:20 2020 +0800
+
+    文章上拉效果--瀑布流
+
+[33mcommit fd0469cf573bcaae60219a39f89768c887294930[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 13:31:19 2020 +0800
+
+    登录---加载
+
+[33mcommit 3995a81e2e89449ef1a1034889ce91bc7f81293b[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 11:15:44 2020 +0800
+
+    表单验证--自然方式手机号验证
+
+[33mcommit e88ae4e0e729019a2ce7c2f210f4fa14cee9d238[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 10:54:10 2020 +0800
+
+    表单验证--自然方式 语言包
+
+[33mcommit b35a89ccc13c8556aa741ac853b2977bc4c1687d[m
+Author: Your yunchao <you@example.com>
+Date:   Thu Mar 5 10:25:26 2020 +0800
+
+    token管理
+
+[33mcommit 0b6c945f225b56f42be990be9508178e73d3dd0e[m
+Author: Your yunchao <you@example.com>
+Date:   Wed Mar 4 21:59:36 2020 +0800
+
+    登录-布局-封装api 账号校验
+
+[33mcommit 7c046679e93c1972e4f5b58e13949eb2e55a5713[m
+Author: Your yunchao <you@example.com>
+Date:   Wed Mar 4 21:22:24 2020 +0800
+
+    axios 配置-响应封装
+
+[33mcommit 98e0100b16e4873917ac2063131df76acbe86626[m
+Author: Your yunchao <you@example.com>
+Date:   Wed Mar 4 20:56:13 2020 +0800
+
+    vuex 管理账号信息
+
+[33mcommit f126b967c26465f7fc2a36cbc42d0b9459aa6059[m
+Author: Your yunchao <you@example.com>
+Date:   Wed Mar 4 20:18:53 2020 +0800
+
+    布局组件-全局样式 -其他组件填充
+
+[33mcommit 23d2400fbe05f0c7db9b9e633c457d5bdcbfcef2[m
+Author: Your yunchao <you@example.com>
+Date:   Wed Mar 4 16:41:20 2020 +0800
+
+    vant 组件库-rem 适配
+
+[33mcommit 2ad9129f29d84e04671254ee790952ede451f1bc[m
+Author: Your yunchao <you@example.com>
+Date:   Tue Mar 3 10:13:16 2020 +0800
+
+    项目文件初始化
+
+[33mcommit b2f4f2ab627a4e886590b064df7ca3b8dd8539c2[m
+Author: Your yunchao <you@example.com>
+Date:   Tue Mar 3 02:20:04 2020 +0800
+
+    init

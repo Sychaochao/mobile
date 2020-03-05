@@ -1,9 +1,11 @@
 <template>
- <div class="scroll-wrapper">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list>
-        </div>
+  <div class="scroll-wrapper">
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-cell v-for="item in list" :key="item" :title="item" />
+      </van-list>
+    </van-pull-refresh>
+  </div>
 </template>
 
 <script>
@@ -11,7 +13,9 @@ export default {
   name: 'com-article',
   data () {
     return {
-      // 瀑布流
+      // 下拉成员
+      isLoading: false, // 是不是加载的状态
+      // 瀑布流 上拉成员
       list: [], // 接受加载好的内容
       loading: false,
       finished: false
@@ -19,6 +23,18 @@ export default {
   },
   methods: {
     // 瀑布流加载方法
+    // 下拉执行的方法
+    onRefresh () {
+      // 设置延迟 1s 延迟
+      setTimeout(() => {
+        // 调用上拉获得数据
+        this.onLoad()
+        // 下拉加载完成 /结束 加载动画
+        this.isLoading = false
+        // 成功提示
+        this.$toast.success('刷新成功')
+      }, 1000)
+    },
     onLoad () {
       setTimeout(() => {
         for (let i = 0; i < 10; i++) {
