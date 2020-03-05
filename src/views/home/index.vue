@@ -3,49 +3,35 @@
     <van-tabs v-model="activeChannelIndex">
       <!-- <van-tab title="标签名称">当前标签对应的内容</van-tab> -->
       <van-tab title="推荐">
-
-        <div class="scroll-wrapper">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list>
-        </div>
+        <!--  使用 -->
+        <com-article></com-article>
       </van-tab>
-      <van-tab title="数据库">数据库内容展示</van-tab>
-      <van-tab title="后端">后端内容展示</van-tab>
+      <van-tab title="数据库">
+         <com-article></com-article>
+      </van-tab>
+      <van-tab title="后端">
+         <com-article></com-article>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+// 导入文章瀑布组件
+import ComArticle from './components/com-article.vue'
 export default {
   name: 'home-index',
+  components: {
+    // 注册
+    ComArticle
+  },
   data () {
     return {
-      // 瀑布流
-      list: [], // 接受加载好的内容
-      loading: false,
-      finished: false,
       // 激活 频道下标标志
       activeChannelIndex: 1
     }
-  },
-  methods: {
-    // 瀑布流加载方法
-    onLoad () {
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false // 清除
-
-        // 数据 全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true // 停止瀑布流加载
-        }
-      }, 1000)
-    }
   }
+
 }
 </script>
 
