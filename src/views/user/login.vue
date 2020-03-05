@@ -12,34 +12,36 @@
         required：不进行校验，设置表单域前边有"红星"
         clearable：表单域内容可以通过右侧“叉号”清除
       -->
-      <ValidationProvider rules="required|phone" name="手机号" v-slot="{errors}">
-        <van-field
-          v-model="loginForm.mobile"
-          type="tel"
-          placeholder="请输入手机号码"
-          label="手机号"
-          required
-          clearable
-          :error-message="errors[0]"
-        />
-      </ValidationProvider>
-      <ValidationProvider rules="required" name="验证码" v-slot="{errors }">
-        <van-field
-          v-model="loginForm.code"
-          type="password"
-          placeholder="请输入验证码"
-          label="验证码"
-          required
-          clearable
-          :error-message="errors[0]"
-        >
-          <!-- "命名插槽"应用，提示相关按钮，是要给van-field组件内部的slot去填充的
+      <ValidationObserver ref="loginFormRef">
+        <ValidationProvider rules="required|phone" name="手机号" v-slot="{errors}">
+          <van-field
+            v-model="loginForm.mobile"
+            type="tel"
+            placeholder="请输入手机号码"
+            label="手机号"
+            required
+            clearable
+            :error-message="errors[0]"
+          />
+        </ValidationProvider>
+        <ValidationProvider rules="required" name="验证码" v-slot="{errors }">
+          <van-field
+            v-model="loginForm.code"
+            type="password"
+            placeholder="请输入验证码"
+            label="验证码"
+            required
+            clearable
+            :error-message="errors[0]"
+          >
+            <!-- "命名插槽"应用，提示相关按钮，是要给van-field组件内部的slot去填充的
         size="small" 设置按钮大小的
         type="primary" 设置按钮背景颜色
-          -->
-          <van-button slot="button" size="small" type="primary">发送验证码</van-button>
-        </van-field>
-      </ValidationProvider>
+            -->
+            <van-button slot="button" size="small" type="primary">发送验证码</van-button>
+          </van-field>
+        </ValidationProvider>
+      </ValidationObserver>
     </van-cell-group>
     <div class="login-btn">
       <!--van-button
@@ -48,24 +50,34 @@
         round：圆边效果
         block：块级样式设置，占据一行
       -->
-      <van-button type="info" size="small" round block @click="login()">登录</van-button>
+      <van-button
+        type="info"
+        size="small"
+        round
+        block
+        :loading="isLogin"
+        loading-text="登录中..."
+        @click="login()"
+      >登录</van-button>
     </div>
   </div>
 </template>
 
 <script>
 // 验证校验相关导入
-import { ValidationProvider } from 'vee-validate'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { apiUserLogin } from '@/api/user.js'
 
 export default {
   name: 'user-login',
   components: {
     // 注册
-    ValidationProvider
+    ValidationProvider,
+    ValidationObserver
   },
   data () {
     return {
+      isLogin: false, // 登录按钮是否加载等待
       // 登录表单数据对象
       // mobile和code是"api数据接口"告诉的，不是自定义的
       loginForm: {
@@ -77,13 +89,24 @@ export default {
   methods: {
     // 登录系统
     async login () {
+      const valid = await this.$refs.loginFormRef.validate()
+      if (!valid) {
+        // 校验失败，停止后续代码
+        return false
+      }
+      // 使得按钮变为加载中
+      this.isLogin = true
       try {
         const result = await apiUserLogin(this.loginForm)
         this.$store.commit('updateUser', result)
       } catch (err) {
+        // 恢复按钮加载中状态
+        this.isLogin = false
         // 错误提示
         return this.$toast.fail('亲 用户或密码错误了哟' + err)
       }
+      // 恢复按钮加载中状态
+      this.isLogin = false
       this.$toast.success('登录成功咯!')
       this.$router.push('/') // 跳转到首页 页面
     }
