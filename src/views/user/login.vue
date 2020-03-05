@@ -12,28 +12,34 @@
         required：不进行校验，设置表单域前边有"红星"
         clearable：表单域内容可以通过右侧“叉号”清除
       -->
-      <van-field
-        v-model="loginForm.mobile"
-        type="tel"
-        placeholder="请输入手机号码"
-        label="手机号"
-        required
-        clearable
-      />
-      <van-field
-        v-model="loginForm.code"
-        type="password"
-        placeholder="请输入验证码"
-        label="验证码"
-        required
-        clearable
-      >
-        <!-- "命名插槽"应用，提示相关按钮，是要给van-field组件内部的slot去填充的
+      <ValidationProvider rules="required" name="手机号" v-slot="{errors}">
+        <van-field
+          v-model="loginForm.mobile"
+          type="tel"
+          placeholder="请输入手机号码"
+          label="手机号"
+          required
+          clearable
+          :error-message="errors[0]"
+        />
+      </ValidationProvider>
+      <ValidationProvider rules="required" name="验证码" v-slot="{errors }">
+        <van-field
+          v-model="loginForm.code"
+          type="password"
+          placeholder="请输入验证码"
+          label="验证码"
+          required
+          clearable
+          :error-message="errors[0]"
+        >
+          <!-- "命名插槽"应用，提示相关按钮，是要给van-field组件内部的slot去填充的
         size="small" 设置按钮大小的
         type="primary" 设置按钮背景颜色
-        -->
-        <van-button slot="button" size="small" type="primary">发送验证码</van-button>
-      </van-field>
+          -->
+          <van-button slot="button" size="small" type="primary">发送验证码</van-button>
+        </van-field>
+      </ValidationProvider>
     </van-cell-group>
     <div class="login-btn">
       <!--van-button
@@ -48,10 +54,16 @@
 </template>
 
 <script>
+// 验证校验相关导入
+import { ValidationProvider } from 'vee-validate'
 import { apiUserLogin } from '@/api/user.js'
 
 export default {
   name: 'user-login',
+  components: {
+    // 注册
+    ValidationProvider
+  },
   data () {
     return {
       // 登录表单数据对象
