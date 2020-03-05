@@ -12,7 +12,7 @@
         required：不进行校验，设置表单域前边有"红星"
         clearable：表单域内容可以通过右侧“叉号”清除
       -->
-      <ValidationProvider rules="required" name="手机号" v-slot="{errors}">
+      <ValidationProvider rules="required|phone" name="手机号" v-slot="{errors}">
         <van-field
           v-model="loginForm.mobile"
           type="tel"

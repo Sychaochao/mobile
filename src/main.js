@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 
 //  所有import 都在上面
-import '@/utils/validate.js' // 验证校验相关
+import '@/utils/validate.js' // 验证相关
 // vant 导入
 import Vant from 'vant'
 // vant 样式导入
