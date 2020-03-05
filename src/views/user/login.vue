@@ -63,14 +63,17 @@ export default {
     }
   },
   methods: {
+    // 登录系统
     async login () {
       try {
-        await apiUserLogin(this.loginForm)
+        const result = await apiUserLogin(this.loginForm)
+        this.$store.commit('updateUser', result)
       } catch (err) {
+        // 错误提示
         return this.$toast.fail('亲 用户或密码错误了哟' + err)
       }
       this.$toast.success('登录成功咯!')
-      this.$router.push('/home') // 跳转到首页 页面
+      this.$router.push('/') // 跳转到首页 页面
     }
   }
 }
