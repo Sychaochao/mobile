@@ -2,7 +2,32 @@
   <div class="scroll-wrapper">
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title" />
+        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title">
+          <template slot="label">
+            <van-grid
+              :column-num="item.cover.type"
+              :gutter="10"
+              :border="false"
+              v-if="item.cover.type>0"
+            >
+              <!-- 封面图片类型：没有type=0、 1个type=1、 3个type=3 -->
+              <!-- v-for可以对数字做遍历 -->
+              <!-- v-for="xx in 3" //xx: 1、2、3  -->
+              <van-grid-item v-for="item2 in item.cover.type" :key="item2">
+                <!-- van-image是表现图片的组件，图片下标是从0开始，自然item2-1操作 -->
+                <van-image width="85" height="85" :src="item.cover.images[item2-1]" />
+              </van-grid-item>
+            </van-grid>
+            <p>
+              <span>作者:{{item.aut_name}}</span>
+              &nbsp;
+              <span>评论 :{{item.comm_count}}</span>
+              &nbsp;
+              <span>时间:{{item.pubdate}}</span>
+              &nbsp;
+            </p>
+          </template>
+        </van-cell>
       </van-list>
     </van-pull-refresh>
   </div>
