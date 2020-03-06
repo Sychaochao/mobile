@@ -81,7 +81,7 @@ export default {
       // 登录表单数据对象
       // mobile和code是"api数据接口"告诉的，不是自定义的
       loginForm: {
-        mobile: '13911111111', // 手机号码
+        mobile: '18766668888', // 手机号码
         code: '246810' // 验证码
       }
     }

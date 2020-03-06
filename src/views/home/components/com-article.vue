@@ -2,17 +2,33 @@
   <div class="scroll-wrapper">
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <van-cell v-for="item in list" :key="item" :title="item" />
+    <van-cell
+          v-for="item in articleList"
+          :key="item.art_id.toString()"
+          :title="item.title"/>
       </van-list>
     </van-pull-refresh>
   </div>
 </template>
 
 <script>
+// 导入获得文章的api函数
+import { apiArticleList } from '@/api/article.js'
 export default {
   name: 'com-article',
+  props: {
+    channelID: {
+      // type:类型限制String Number Array, 类型不符合，就接收不到
+      // required:true, 参数必须传递
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
+      // 文章列表信息
+      articleList: [],
+      ts: Date.now(),
       // 下拉成员
       isLoading: false, // 是不是加载的状态
       // 瀑布流 上拉成员
@@ -21,7 +37,23 @@ export default {
       finished: false
     }
   },
+  created () {
+    // 文章
+    this.getArticleList()
+  },
   methods: {
+    // 获得文章列表信息
+    async getArticleList () {
+      // 调用api获得数据（参数:频道id、时间戳）
+      const obj = {
+        channel_id: this.channelID,
+        timestamp: this.ts
+      }
+      const result = await apiArticleList(obj)
+      // console.log(result)
+      // data接收数据
+      this.articleList = result.results
+    },
     // 瀑布流加载方法
     // 下拉执行的方法
     onRefresh () {
