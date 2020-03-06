@@ -16,6 +16,18 @@ import '@/assets/css/global.less'
 // 全局注册
 Vue.use(Vant)
 
+Vue.prototype.$sleep = (time) => {
+  // Promise对象返回：应用端可以介入await，这样异步过程变为同步过程，可以保证当前代码没有执行完毕，
+  // 后续代码不要执行
+  return new Promise((resolve) => {
+    // setTimeout设置具体延迟
+    setTimeout(() => {
+      // resolve()是空执行，打酱油的
+      resolve()
+    }, time)
+  })
+}
+
 Vue.config.productionTip = false
 
 new Vue({

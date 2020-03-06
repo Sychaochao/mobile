@@ -2,10 +2,7 @@
   <div class="scroll-wrapper">
     <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-    <van-cell
-          v-for="item in articleList"
-          :key="item.art_id.toString()"
-          :title="item.title"/>
+        <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title" />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -52,7 +49,8 @@ export default {
       const result = await apiArticleList(obj)
       // console.log(result)
       // data接收数据
-      this.articleList = result.results
+      return result
+      // this.articleList = result.results
     },
     // 瀑布流加载方法
     // 下拉执行的方法
@@ -67,7 +65,7 @@ export default {
         this.$toast.success('刷新成功')
       }, 1000)
     },
-    onLoad () {
+    /*   onLoad () { // 之前的操作
       setTimeout(() => {
         for (let i = 0; i < 10; i++) {
           this.list.push(this.list.length + 1)
@@ -80,6 +78,32 @@ export default {
           this.finished = true // 停止瀑布流加载
         }
       }, 1000)
+    } */
+    // 瀑布流上拉执行的动作
+    async onLoad () {
+      // 每次执行给延迟0.8秒
+      await this.$sleep(800)
+      // 瀑布 与 真实文章 结合
+      // 1. 获得真实文章数据
+      const articles = await this.getArticleList()
+      // articles:{results:文章列表，pre_timestamp:分页时间戳}
+      // console.log(articles)
+      // 2. 对数据做处理
+      if (articles.results.length > 0) {
+        // data接收数据，要设置"追加"，不要直接赋值
+        // 直接赋值会使得瀑布的数据区域填充不满，会造成瀑布不断加载效果
+        this.articleList.push(...articles.results)
+        // ... 展开运算符，是要把[]数组标志给去除，使得内部各个小元素暴露出来，进而被push追加使用
+        // this.articleList.push({id,title,xx},{id,title,xx},{id,title,}……)
+        // 更新时间戳，方便获取"下一页"数据
+        this.ts = articles.pre_timestamp
+      } else {
+        // 没有获得到数据，要停止瀑布流
+        this.finished = true
+      }
+
+      // 3. 停止瀑布加载动画
+      this.loading = false
     }
   }
 }
