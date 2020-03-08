@@ -15,19 +15,15 @@
               <!-- v-for="xx in 3" //xx: 1、2、3  -->
               <van-grid-item v-for="item2 in item.cover.type" :key="item2">
                 <!-- van-image是表现图片的组件，图片下标是从0开始，自然item2-1操作 -->
-               <!-- lazy-load懒加载 -->
-                <van-image
-                width="85" height="85"
-                 :src="item.cover.images[item2-1]"
-                  lazy-load
-                  />
+                <!-- lazy-load懒加载 -->
+                <van-image width="85" height="85" :src="item.cover.images[item2-1]" lazy-load />
               </van-grid-item>
             </van-grid>
             <p>
               <!--给 van-cell  的右侧设置叉号按钮
                 van-icon:图标组件name="close"代表叉号
               -->
-               <van-icon name="close" style="float:right;"/>
+              <van-icon name="close" style="float:right;" @click="displayDialog()"/>
               <span>作者:{{item.aut_name}}</span>
               &nbsp;
               <span>评论 :{{item.comm_count}}</span>
@@ -39,14 +35,21 @@
         </van-cell>
       </van-list>
     </van-pull-refresh>
+    <!-- 文章更多弹出层 -->
+     <more-action v-model="showDialog"></more-action>
   </div>
 </template>
 
 <script>
+// 对com-moreaction.vue弹出框组件做 导入、注册、使用
+import MoreAction from './com-moreaction.vue'
 // 导入获得文章的api函数
 import { apiArticleList } from '@/api/article.js'
 export default {
   name: 'com-article',
+  components: {
+    MoreAction
+  },
   props: {
     channelID: {
       // type:类型限制String Number Array, 类型不符合，就接收不到
@@ -57,6 +60,7 @@ export default {
   },
   data () {
     return {
+      showDialog: false, // 控制子组件弹出框是否显示
       // 文章列表信息
       articleList: [],
       ts: Date.now(),
@@ -73,6 +77,10 @@ export default {
     this.getArticleList()
   },
   methods: {
+    // 展示更多操作的弹层
+    displayDialog () {
+      this.showDialog = true
+    },
     // 获得文章列表信息
     async getArticleList () {
       // 调用api获得数据（参数:频道id、时间戳）
