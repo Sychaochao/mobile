@@ -21,7 +21,7 @@
     >
      <van-cell-group v-if="isOneLevel">
         <!-- 一级菜单 -->
-        <van-cell title="不感兴趣" icon="location-o"></van-cell>
+        <van-cell icon="location-o" title="不感兴趣" @click="articleDislike()"/>
         <van-cell title="反馈垃圾内容" icon="location-o" is-link @click="isOneLevel=false"></van-cell>
         <van-cell title="拉黑作者" icon="location-o"></van-cell>
       </van-cell-group>
