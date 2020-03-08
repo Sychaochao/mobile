@@ -23,7 +23,11 @@
               <!--给 van-cell  的右侧设置叉号按钮
                 van-icon:图标组件name="close"代表叉号
               -->
-              <van-icon name="close" style="float:right;" @click="displayDialog()"/>
+              <van-icon
+                name="close"
+                style="float:right;"
+                @click="displayDialog(item.art_id.toString())"
+              />
               <span>作者:{{item.aut_name}}</span>
               &nbsp;
               <span>评论 :{{item.comm_count}}</span>
@@ -36,7 +40,11 @@
       </van-list>
     </van-pull-refresh>
     <!-- 文章更多弹出层 -->
-     <more-action v-model="showDialog"></more-action>
+    <more-action
+      v-model="showDialog"
+      :articleID="nowArticleID"
+      @dislikeSuccess="handleDislikeSuccess"
+    ></more-action>
   </div>
 </template>
 
@@ -60,6 +68,7 @@ export default {
   },
   data () {
     return {
+      nowArticleID: '', //  不感兴趣文章id
       showDialog: false, // 控制子组件弹出框是否显示
       // 文章列表信息
       articleList: [],
@@ -77,9 +86,21 @@ export default {
     this.getArticleList()
   },
   methods: {
+    handleDislikeSuccess () {
+      const index = this.articleList.findIndex(item => {
+        // 满足条件就return为true信息出来，那么当前项目的下标序号就获得的到了
+        return item.art_id.toString() === this.nowArticleID
+      })
+      //  通过下标序号从列表中删除指定的文章
+      // 数组.splice(下标, 长度)
+      this.articleList.splice(index, 1)
+      // (只是页面级删除)
+    },
     // 展示更多操作的弹层
-    displayDialog () {
+    displayDialog (artID) {
       this.showDialog = true
+      // 3. 把文章id赋予给data成员
+      this.nowArticleID = artID
     },
     // 获得文章列表信息
     async getArticleList () {
