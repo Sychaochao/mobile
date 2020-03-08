@@ -24,6 +24,10 @@
               </van-grid-item>
             </van-grid>
             <p>
+              <!--给 van-cell  的右侧设置叉号按钮
+                van-icon:图标组件name="close"代表叉号
+              -->
+               <van-icon name="close" style="float:right;"/>
               <span>作者:{{item.aut_name}}</span>
               &nbsp;
               <span>评论 :{{item.comm_count}}</span>
