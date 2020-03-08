@@ -15,7 +15,12 @@
               <!-- v-for="xx in 3" //xx: 1、2、3  -->
               <van-grid-item v-for="item2 in item.cover.type" :key="item2">
                 <!-- van-image是表现图片的组件，图片下标是从0开始，自然item2-1操作 -->
-                <van-image width="85" height="85" :src="item.cover.images[item2-1]" />
+               <!-- lazy-load懒加载 -->
+                <van-image
+                width="85" height="85"
+                 :src="item.cover.images[item2-1]"
+                  lazy-load
+                  />
               </van-grid-item>
             </van-grid>
             <p>
