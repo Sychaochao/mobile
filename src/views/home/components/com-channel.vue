@@ -20,10 +20,9 @@
         </div>
       </div>
       <van-grid class="channel-conter" :gutter="10" clickable>
-        <van-grid-item v-for="item in restChannel" :key="item.id">
-          <div class="info" slot="text">
-            <span class="text">{{item.name}}</span>
-          </div>
+        <van-grid-item v-for="(item,k) in channelList" :key="item.id">
+          <span class="text" :style="{color:k===activeChannelIndex?'red':''}">{{item.name}}</span>
+          <!-- <van-icon class="close-icon" name="close" /> -->
         </van-grid-item>
       </van-grid>
     </div>
@@ -36,8 +35,8 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="item in channelAll" :key="item.id">
-          <div class="info" slot="text">
+        <van-grid-item v-for="item in restChannel" :key="item.id">
+          <div class="info">
             <span class="text">{{item.name}}</span>
           </div>
         </van-grid-item>
@@ -76,13 +75,15 @@ export default {
   },
   computed: {
     restChannel () {
-      const userChannelIds = this.channelList.map(item => {
+      const userChannelIDs = this.channelList.map(item => {
         return item.id
       })
       const rest = this.channelAll.filter(item => {
-        return !userChannelIds.includes(item.id)
+        // 我的频道  里边不包含当前项目，就给与收集
+        // 判断我的频道id集合 是否包含当前项目，不包含的才收集
+        // 数组.includes(元素)  判断数组中是否有出现某个元素，返回Boolean
+        return !userChannelIDs.includes(item.id)
       })
-      // 返回过滤好的 剩余频道
       return rest
     }
   },
@@ -90,9 +91,10 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // 获得"全部"频道数据
     async getChannelAll () {
-      const res = await apiChannelAll()
-      this.channelAll = res.channels
+      const result = await apiChannelAll()
+      this.channelAll = result.channels
     }
   }
 }
