@@ -1,6 +1,15 @@
 // 导入axios对象
 import request from '@/utils/request.js'
 
+/* 获取所有频道数据
+ */
+export function apiChannelAll () {
+  return request({
+    url: '/app/v1_0/channels',
+    method: 'get'
+  })
+}
+
 // 频道相关api函数配置文件
 
 /*

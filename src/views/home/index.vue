@@ -70,38 +70,35 @@ export default {
   // 灵活的项目将垂直显示，正如一个列一样
   flex-direction: column;
   height: 100%;
+  // 标签页全部内容展示区域
   /deep/ .van-tabs__content {
     // flex:1;的值是1 1 0%，【父控件有剩余空间占1份放大，父控件空间不足按1缩小，自身的空间大小是0%】
     flex: 1;
     overflow: hidden;
   }
+  // 标签页具体内容展示区域
   /deep/ .van-tab__pane {
     height: 100%;
-    // 给上拉列表设置样式
-    .scroll-wrapper {
-      height: 100%;
-      // 瀑布流 区域 如果垂直方向内容过多 要呈现滚动条
-      overflow-y: auto;
-    }
   }
   // 给频道下边沿横向设置样式
   /deep/ .van-tabs__line {
-    background-color: rgb(30, 219, 210);
+    background-color: #1989fa;
   }
-}
-/*给 更多 频道设置样式*/
-.channel-more{
-  position:fixed;
-  right:0;
-  background-color: white;
-  line-height:88px;
-  height:88px;
-  width: 90px;
-  text-align:center;
-  font-size:40px;
-}
-/*频道列表*/
+
+  /*给 更多 频道设置样式*/
+  .channel-more {
+    position: fixed;
+    right: 0;
+    background-color: white;
+    line-height: 88px;
+    height: 88px;
+    width: 90px;
+    text-align: center;
+    font-size: 40px;
+  }
+  /*频道标签页宽度减小一些*/
   /deep/ .van-tabs__wrap {
     width: 90%; /*设置频道列表最大宽度，可以避免最后一个频道被按钮覆盖住*/
   }
+}
 </style>

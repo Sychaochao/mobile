@@ -20,11 +20,10 @@
         </div>
       </div>
       <van-grid class="channel-conter" :gutter="10" clickable>
-        <van-grid-item v-for="(item,k) in channelList" :key="item.id">
-         <span class="text"
-          :style="{color:k===activeChannelIndex?'red':''}">
-      {{item.name}}
-    </span>
+        <van-grid-item v-for="item in restChannel" :key="item.id">
+          <div class="info" slot="text">
+            <span class="text">{{item.name}}</span>
+          </div>
         </van-grid-item>
       </van-grid>
     </div>
@@ -37,9 +36,9 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="value in 8" :key="value" text="文字">
-          <div class="info">
-            <span class="text">文字</span>
+        <van-grid-item v-for="item in channelAll" :key="item.id">
+          <div class="info" slot="text">
+            <span class="text">{{item.name}}</span>
           </div>
         </van-grid-item>
       </van-grid>
@@ -48,8 +47,16 @@
 </template>
 
 <script>
+// 获得所有频道的api函数
+import { apiChannelAll } from '@/api/channel.js'
+
 export default {
   name: 'com-channel',
+  data () {
+    return {
+      channelAll: [] // 全部频道
+    }
+  },
   props: {
     // 接收父组件v-model的数据信息
     value: {
@@ -66,43 +73,64 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  computed: {
+    restChannel () {
+      const userChannelIds = this.channelList.map(item => {
+        return item.id
+      })
+      const rest = this.channelAll.filter(item => {
+        return !userChannelIds.includes(item.id)
+      })
+      // 返回过滤好的 剩余频道
+      return rest
+    }
+  },
+  created () {
+    this.getChannelAll()
+  },
+  methods: {
+    async getChannelAll () {
+      const res = await apiChannelAll()
+      this.channelAll = res.channels
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.channel{
+.channel {
   margin-top: 70px;
-  .channel-head{
+  .channel-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    .titlte{
+    .titlte {
       font-size: 30px;
       margin-right: 5px;
     }
-    .desc{
+    .desc {
       font-size: 16px;
       color: gray;
     }
   }
-  .channel-content{
-    .text{
+  .channel-content {
+    .text {
       font-size: 16px;
     }
-    .active{
+    .active {
       color: red;
     }
-    .close-icon{
+    .close-icon {
       font-size: 20px;
-      position:absolute;
-      top :-5px;
+      position: absolute;
+      top: -5px;
       right: -5px;
       z-index: 999;
-    background-color: #fff;
+      background-color: #fff;
     }
-    .info{
+    .info {
       display: flex;
       align-items: center;
     }
