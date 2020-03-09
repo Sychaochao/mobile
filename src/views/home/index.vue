@@ -2,6 +2,12 @@
   <div class="container">
 
     <van-tabs v-model="activeChannelIndex">
+      <div slot="nav-right" class="channel-more" @click="showChannel=true">
+        <!-- /t图标  wanp-nav 三个杠图标 -->
+        <van-icon name="wap-nav" />
+      </div>
+      <!-- 频道操作 -->
+      <com-channel v-model="showChannel"></com-channel>
       <!-- <van-tab title="标签名称">当前标签对应的内容</van-tab> -->
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
         <!-- 使用 ，把激活频道id当参数，传递给子组件-->
@@ -12,6 +18,7 @@
 </template>
 
 <script>
+import ComChannel from './components/com-channel'
 // 导入获得频道的api函数
 import { apiChannelList } from '@/api/channel.js'
 // 导入文章瀑布组件
@@ -20,10 +27,13 @@ export default {
   name: 'home-index',
   components: {
     // 注册
+    ComChannel,
     ComArticle
+
   },
   data () {
     return {
+      showChannel: false, // 频道弹出层显示标志
       isLoading: false,
       // 频道列表数据
       channelList: [],
@@ -73,6 +83,23 @@ export default {
   // 给频道下边沿横向设置样式
   /deep/ .van-tabs__line {
     background-color: rgb(30, 219, 210);
+  }
+}
+/*给 更多 频道设置样式*/
+.channel-more{
+  position:fixed;
+  right:0;
+  background-color: white;
+  line-height:88px;
+  height:88px;
+  width: 90px;
+  text-align:center;
+  font-size:40px;
+}
+/*频道列表*/
+.van-tabs {
+  /deep/ .van-tabs__wrap {
+    width: 90%; /*设置频道列表最大宽度，可以避免最后一个频道被按钮覆盖住*/
   }
 }
 </style>
