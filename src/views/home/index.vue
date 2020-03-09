@@ -7,7 +7,11 @@
         <van-icon name="wap-nav" />
       </div>
       <!-- 频道操作 -->
-      <com-channel v-model="showChannel"></com-channel>
+    <com-channel
+             v-model="showChannel"
+             :channelList="channelList"
+             :activeChannelIndex="activeChannelIndex"
+             ></com-channel>
       <!-- <van-tab title="标签名称">当前标签对应的内容</van-tab> -->
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
         <!-- 使用 ，把激活频道id当参数，传递给子组件-->
@@ -97,9 +101,7 @@ export default {
   font-size:40px;
 }
 /*频道列表*/
-.van-tabs {
   /deep/ .van-tabs__wrap {
     width: 90%; /*设置频道列表最大宽度，可以避免最后一个频道被按钮覆盖住*/
   }
-}
 </style>

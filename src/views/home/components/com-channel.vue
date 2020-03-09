@@ -20,8 +20,11 @@
         </div>
       </div>
       <van-grid class="channel-conter" :gutter="10" clickable>
-        <van-grid-item v-for="value in 8 " :key="value" text="文字">
-          <span class="text">文字</span>
+        <van-grid-item v-for="(item,k) in channelList" :key="item.id">
+         <span class="text"
+          :style="{color:k===activeChannelIndex?'red':''}">
+      {{item.name}}
+    </span>
         </van-grid-item>
       </van-grid>
     </div>
@@ -52,6 +55,16 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    // 父传递过来的 我的频道数据
+    channelList: {
+      type: Array,
+      default: () => {}
+    },
+    // 激活当前频道
+    activeChannelIndex: {
+      type: Number,
+      default: 0
     }
   }
 }
