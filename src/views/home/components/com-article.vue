@@ -1,6 +1,11 @@
 <template>
   <div class="scroll-wrapper">
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-pull-refresh
+      v-model="isLoading"
+      @refresh="onRefresh"
+      :success-text="downSuccessText"
+      :success-duration="1000"
+    >
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
         <van-cell v-for="item in articleList" :key="item.art_id.toString()" :title="item.title">
           <template slot="label">
@@ -68,6 +73,8 @@ export default {
   },
   data () {
     return {
+      // 下拉动作完成的文字提示
+      downSuccessText: '',
       nowArticleID: '', //  不感兴趣文章id
       showDialog: false, // 控制子组件弹出框是否显示
       // 文章列表信息
@@ -115,9 +122,29 @@ export default {
       return result
       // this.articleList = result.results
     },
-    // 瀑布流加载方法
-    // 下拉执行的方法
-    onRefresh () {
+    // 下拉刷新
+    async onRefresh () {
+      await this.$sleep(800)
+
+      // 获得文章列表数据
+      const articles = await this.getArticleList()
+
+      // 判断是否有获得到最新的文章
+      if (articles.results.length > 0) {
+        // 有获得到 unshift 数组前置追加元素
+        this.articleList.unshift(...articles.results)
+        // 更新时间戳
+        this.ts = articles.pre_timestamp // 使得继续请求，可以获得下页数据
+        this.downSuccessText = '文章更新成功'
+      } else {
+        // 没有最新的文章了，页面要给与提示
+        this.downSuccessText = '文章已经是最新的'
+      }
+      this.isLoading = false // 下拉动画消失[加载完成了]
+    },
+
+    // 下拉执行的方法  之前的 看看这相当于index.vue 组件  方法 定义 引入看好
+    /*   onRefresh () {
       // 设置延迟 1s 延迟
       setTimeout(() => {
         // 调用上拉获得数据
@@ -127,7 +154,8 @@ export default {
         // 成功提示
         this.$toast.success('刷新成功')
       }, 1000)
-    },
+    }, */
+
     /*   onLoad () { // 之前的操作
       setTimeout(() => {
         for (let i = 0; i < 10; i++) {

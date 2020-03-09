@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+
     <van-tabs v-model="activeChannelIndex">
       <!-- <van-tab title="标签名称">当前标签对应的内容</van-tab> -->
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">
@@ -23,6 +24,7 @@ export default {
   },
   data () {
     return {
+      isLoading: false,
       // 频道列表数据
       channelList: [],
       // 激活 频道下标标志
@@ -34,6 +36,7 @@ export default {
     this.getChannelList()
   },
   methods: {
+
     // 获得频道列表数据
     async getChannelList () {
       // 通过api获得数据
