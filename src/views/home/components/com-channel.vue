@@ -29,7 +29,7 @@
       <van-grid class="channel-content" :gutter="10" clickable>
         <van-grid-item v-for="(item,k) in channelList" :key="item.id">
           <span class="text" :style="{color:k===activeChannelIndex?'red':''}">{{item.name}}</span>
-          <van-icon v-show="isEdit && k>0" class="close-icon" name="close" />
+          <van-icon @click="userToRest(item,k)"  v-show="isEdit && k>0" class="close-icon" name="close" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -54,7 +54,7 @@
 
 <script>
 // 获得所有频道的api函数
-import { apiChannelAll, apiChannelAdd } from '@/api/channel.js'
+import { apiChannelAll, apiChannelAdd, apiChannelDel } from '@/api/channel.js'
 
 export default {
   name: 'com-channel',
@@ -100,7 +100,12 @@ export default {
     this.getChannelAll()
   },
   methods: {
-    // 推荐 频道 添加频道
+    // ····························· 删除频道·································
+    userToRest (channel, index) {
+      this.channelList.splice(index, 1)
+      apiChannelDel(channel)
+    },
+    // 推荐 频道 添加频道···············································
     restToUser (channel) {
       this.channelList.push(channel)
       apiChannelAdd(channel)

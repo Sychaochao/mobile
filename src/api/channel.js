@@ -6,6 +6,18 @@ import store from '@/store' // 导入vuex模块，以便知道当前用户是否
 const CHANNEL_KEY_TRAVEL = 'hm-channel-travel' // 游客key
 const CHANNEL_KET_VIP = 'hm-channel-vip' // 登录用户Key
 
+// 删除频道
+export async function apiChannelDel (channel) {
+  const key = store.state.user.token ? CHANNEL_KET_VIP : CHANNEL_KEY_TRAVEL
+
+  const cacheChannels = JSON.parse(localStorage.getItem(key))
+  const tmpChannels = cacheChannels.filter(item => {
+    return channel.id !== item.id
+  })
+  localStorage.setItem(key, JSON.stringify(tmpChannels))
+  return null
+}
+
 // 添加频道
 export function apiChannelAdd (channel) {
   return new Promise(function (resolve) {
