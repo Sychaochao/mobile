@@ -10,7 +10,7 @@
     <com-channel
              v-model="showChannel"
              :channelList="channelList"
-             :activeChannelIndex="activeChannelIndex"
+             :activeChannelIndex.sync="activeChannelIndex"
              ></com-channel>
       <!-- <van-tab title="标签名称">当前标签对应的内容</van-tab> -->
       <van-tab :title="item.name" v-for="item in channelList" :key="item.id">

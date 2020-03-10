@@ -104,8 +104,11 @@ export default {
     userToRest (channel, index) {
       this.channelList.splice(index, 1)
       apiChannelDel(channel)
+      if (index === this.channelList.length && this.activeChannelIndex === index) {
+        this.$emit('update:activeChannelIndex', index - 1)
+      }
     },
-    // 推荐 频道 添加频道···············································
+    // 推荐``````````````````` 频道 添加频道···············································
     restToUser (channel) {
       this.channelList.push(channel)
       apiChannelAdd(channel)
