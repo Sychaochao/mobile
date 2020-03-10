@@ -7,6 +7,7 @@
     position="bottom"
     :style="{ height: '95%' }"
     close-icon-position="top-left"
+    @closed="isEdit=false"
   >
     <!-- 我的频道 -->
     <div class="channel">
@@ -16,13 +17,19 @@
           <span class="desc">点击进入频道</span>
         </div>
         <div>
-          <van-button type="danger" plain size="mini" round>编辑</van-button>
+          <van-button
+            type="danger"
+            plain
+            size="mini"
+            round
+            @click="isEdit=!isEdit"
+          >{{isEdit?'完成':'编辑'}}</van-button>
         </div>
       </div>
-      <van-grid class="channel-conter" :gutter="10" clickable>
+      <van-grid class="channel-content" :gutter="10" clickable>
         <van-grid-item v-for="(item,k) in channelList" :key="item.id">
           <span class="text" :style="{color:k===activeChannelIndex?'red':''}">{{item.name}}</span>
-          <!-- <van-icon class="close-icon" name="close" /> -->
+          <van-icon v-show="isEdit && k>0" class="close-icon" name="close" />
         </van-grid-item>
       </van-grid>
     </div>
@@ -35,7 +42,7 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="item in restChannel" :key="item.id">
+        <van-grid-item v-for="item in restChannel" :key="item.id" @click="restToUser(item)">
           <div class="info">
             <span class="text">{{item.name}}</span>
           </div>
@@ -47,12 +54,14 @@
 
 <script>
 // 获得所有频道的api函数
-import { apiChannelAll } from '@/api/channel.js'
+import { apiChannelAll, apiChannelAdd } from '@/api/channel.js'
 
 export default {
   name: 'com-channel',
   data () {
     return {
+      isEdit: false, // 是否是编辑状态
+      // restChannels: [],
       channelAll: [] // 全部频道
     }
   },
@@ -91,6 +100,11 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // 推荐 频道 添加频道
+    restToUser (channel) {
+      this.channelList.push(channel)
+      apiChannelAdd(channel)
+    },
     // 获得"全部"频道数据
     async getChannelAll () {
       const result = await apiChannelAll()
@@ -108,7 +122,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    .titlte {
+    .title {
       font-size: 30px;
       margin-right: 5px;
     }
