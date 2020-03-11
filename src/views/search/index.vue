@@ -7,14 +7,18 @@
     -->
     <van-nav-bar title="搜索中心" left-arrow @click-left="$router.back()"/>
     <!-- 搜索输入框 -->
-    <van-search v-model.trim="searchText" placeholder="请输入搜索关键词"/>
+    <van-search v-model.trim="searchText" placeholder="请输入搜索关键词"
+      @search="onSearch(searchText)"/>
     <van-cell-group>
      <van-cell
-            :title="item"
-            icon="search"
+
+             icon="search"
             v-for="(item,k) in suggestionList"
             :key="k"
-            />
+            @click="onSearch(item)"
+            >
+            <div slot="title" v-html="highLightCell(item,searchText)"></div>
+     </van-cell>
     </van-cell-group>
   </div>
 </template>
@@ -48,6 +52,26 @@ export default {
     return {
       suggestionList: [], // 3. 联想建议数据
       searchText: '' // 搜索关键字
+    }
+  },
+  methods: {
+    // 跳转搜索结果
+    onSearch (keywords) {
+      // luyou 跳转
+      this.$router.push({ name: 'result', params: { q: keywords } })
+    },
+    highLightCell (content, keywords) {
+      //  1. 创建正则，i修饰符，表示忽略大小写
+      const reg = new RegExp(keywords, 'i')
+      //  2. 正则与目标内容进行匹配
+      const rst = content.match(reg)
+
+      // 如果目标内容没有匹配到关键字，就不要做高亮了，原样输出即可
+      if (rst === null) {
+        return content
+      }
+      // 3. 对目标内容的关键字做替换，把"普通"的关键字变为"高亮"的关键字
+      return content.replace(reg, `<span style="color:red;">${rst[0]}</span>`)
     }
   }
 }

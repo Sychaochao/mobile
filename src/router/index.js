@@ -46,7 +46,8 @@ const routes = [{
   component: () => import('@/views/search/index.vue') // 搜索中心
 },
 {
-  path: '/search/result',
+  path: '/search/result/:q',
+  name: 'result',
   component: () => import('@/views/search/result.vue') // 搜索结果
 }
 ]
