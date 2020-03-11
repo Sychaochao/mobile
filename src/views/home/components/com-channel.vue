@@ -27,7 +27,11 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="(item,k) in channelList" :key="item.id">
+        <van-grid-item
+         v-for="(item,k) in channelList"
+         :key="item.id"
+         @click="clkChannel(item,k)">
+
           <span class="text" :style="{color:k===activeChannelIndex?'red':''}">{{item.name}}</span>
           <van-icon @click="userToRest(item,k)"  v-show="isEdit && k>0" class="close-icon" name="close" />
         </van-grid-item>
@@ -100,6 +104,14 @@ export default {
     this.getChannelAll()
   },
   methods: {
+    // `````````````````````````前置激活频道···· 兼顾删除················································
+    clkChannel (channel, index) {
+      if (this.isEdit && index > 0) {
+        return this.userToRest(channel, index)
+      }
+      this.$emit('input', false)
+      this.$emit('update:activeChannelIndex', index)
+    },
     // ····························· 删除频道·································
     userToRest (channel, index) {
       this.channelList.splice(index, 1)
