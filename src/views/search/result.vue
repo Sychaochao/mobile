@@ -5,8 +5,30 @@
 </template>
 
 <script>
+import { apiSearchList } from '@/api/search'
 export default {
-  name: 'search-result'
+  name: 'search-result',
+  computed: {
+    // 路由参数
+    q () {
+      return this.$route.params.q
+    }
+  },
+  data () {
+    return {
+      // 搜索结果
+      searchList: []
+    }
+  },
+  created () {
+    this.getSearchList()
+  },
+  methods: {
+    async getSearchList () {
+      const res = await apiSearchList({ q: this.q })
+      this.searchList = res.results
+    }
+  }
 }
 </script>
 
